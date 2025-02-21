@@ -3,7 +3,7 @@ name: Long Running Docker Job
 on:
   workflow_dispatch:  # Bisa dijalankan manual
   schedule:
-    - cron: "0*/6 * * *"  # Menjalankan setiap hari pukul 00:00 UTC
+    - cron: "0 */6 * * *"  # Menjalankan setiap hari pukul 00:00 UTC
 
 jobs:
   run-docker:
