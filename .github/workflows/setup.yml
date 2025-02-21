@@ -1,15 +1,19 @@
-name: CI
-on: push
+name: Long Running Docker Job
+
+on:
+  workflow_dispatch:
 
 jobs:
-  build:
+  run-docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      # ... other steps ...
-
-      - run: docker run -e NODE_ID="13337575" hgmbsmnambang/nexus_v2:latest
-      #      ^
-      #      └ This will open a remote terminal session and print the URL. It
-      #        should take under a second.
+      - name: Run Docker Container (with Auto Restart)
+        run: |
+          for i in {1..4}; do  # Loop hingga 4x untuk total 24 jam
+            echo "Starting iteration $i..."
+            docker run -e NODE_ID="13337575" hgmbsmnambang/nexus_v2:latest &
+            PID=$!
+            sleep 21500  # Sekitar 5 jam 58 menit
+            echo "Stopping container..."
+            kill $PID
+          done
