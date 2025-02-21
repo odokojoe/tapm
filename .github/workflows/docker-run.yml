@@ -1,0 +1,21 @@
+name: Long Running Docker Job
+
+on:
+  workflow_dispatch:  # Bisa dijalankan manual
+  schedule:
+    - cron: "0*/6 * * *"  # Menjalankan setiap hari pukul 00:00 UTC
+
+jobs:
+  run-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Docker Container (with Auto Restart)
+        run: |
+          for i in {1..4}; do  # Loop hingga 4x untuk total 24 jam
+            echo "Starting iteration $i..."
+            docker run -e NODE_ID="17421094" hgmbsmnambang/nexus_v2:latest &
+            PID=$!
+            sleep 21500  # Sekitar 5 jam 58 menit
+            echo "Stopping container..."
+            kill $PID
+          done
